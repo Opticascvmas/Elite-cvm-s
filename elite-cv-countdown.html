@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ÉLITE CV+</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cian:#02ABC8; --cian-dark:#018BA3; --cian-light:#43C6DE;
+    --gris:#404042; --gris-soft:#5b5b5e; --amarillo:#FDC526; --blanco:#FFFFFF;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{min-height:100%;}
+  body{font-family:'Space Grotesk',system-ui,sans-serif;color:var(--blanco);
+    background:var(--cian);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+  .bg{position:fixed;inset:0;z-index:0;overflow:hidden;
+    background:
+      radial-gradient(circle at 50% 0%, var(--cian-light), transparent 55%),
+      radial-gradient(circle at 85% 90%, var(--cian-dark), transparent 50%),
+      linear-gradient(170deg, #05B6D4 0%, var(--cian) 45%, var(--cian-dark) 100%);}
+  .blob{position:fixed;border-radius:50%;background:#fff;z-index:0;filter:blur(2px);animation:floatUp linear infinite;}
+  @keyframes floatUp{from{transform:translateY(112vh) scale(1);}to{transform:translateY(-12vh) scale(1.15);}}
+
+  .stage{position:relative;z-index:2;max-width:680px;margin:0 auto;
+    padding:clamp(28px,6vw,56px) clamp(18px,5vw,32px) 52px;
+    min-height:100vh;display:flex;flex-direction:column;justify-content:center;}
+
+  .kicker{font-family:'Space Mono',monospace;font-size:clamp(10px,2.6vw,13px);
+    letter-spacing:.4em;text-transform:uppercase;text-align:center;margin-bottom:16px;color:#fff;
+    opacity:0;animation:rise .8s .1s forwards;}
+  .kicker b{color:var(--amarillo);}
+  .wordmark{text-align:center;line-height:.9;margin-bottom:16px;opacity:0;animation:rise .8s .25s forwards;}
+  .wordmark .elite{display:block;font-weight:700;letter-spacing:.02em;
+    font-size:clamp(50px,16vw,116px);color:#fff;text-shadow:0 6px 24px rgba(1,90,110,.35);}
+  .wordmark .cv{display:inline-flex;align-items:baseline;gap:.04em;font-weight:700;
+    font-size:clamp(20px,6vw,34px);letter-spacing:.04em;margin-top:6px;}
+  .wordmark .cv .c{color:var(--gris);} .wordmark .cv .p{color:var(--amarillo);font-size:1.15em;line-height:.8;}
+  .hook{text-align:center;font-family:'Source Serif 4',Georgia,serif;
+    font-size:clamp(16px,4.2vw,22px);color:#fff;line-height:1.45;max-width:30ch;margin:4px auto 6px;
+    opacity:0;animation:rise .8s .4s forwards;}
+  .hook em{font-style:italic;color:var(--amarillo);}
+  .statuspill{display:block;width:fit-content;margin:0 auto 30px;font-family:'Space Mono',monospace;
+    font-size:clamp(10px,2.8vw,12.5px);letter-spacing:.2em;text-transform:uppercase;
+    padding:8px 18px;border-radius:99px;box-shadow:0 6px 18px rgba(1,90,110,.25);
+    opacity:0;animation:rise .8s .5s forwards;background:var(--amarillo);color:var(--gris);}
+  .statuspill.live{background:#fff;color:var(--cian-dark);}
+
+  .clocklabel{text-align:center;font-family:'Space Mono',monospace;font-size:clamp(10px,2.6vw,12px);
+    letter-spacing:.2em;text-transform:uppercase;color:#fff;margin-bottom:12px;min-height:16px;}
+  .clocklabel b{color:var(--amarillo);}
+  .clock{display:flex;justify-content:center;gap:clamp(7px,2.5vw,16px);margin-bottom:24px;
+    opacity:0;animation:rise .8s .6s forwards;}
+  .unit{flex:1;max-width:120px;background:#fff;border-radius:18px;
+    padding:clamp(14px,3vw,22px) 6px clamp(11px,2.5vw,16px);text-align:center;
+    box-shadow:0 14px 34px rgba(1,90,110,.28);position:relative;overflow:hidden;}
+  .unit::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:var(--amarillo);}
+  .unit .num{font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(30px,9.5vw,58px);line-height:1;color:var(--gris);}
+  .unit .lbl{font-family:'Space Mono',monospace;font-size:clamp(8px,2.2vw,11px);letter-spacing:.2em;color:var(--cian-dark);text-transform:uppercase;margin-top:8px;font-weight:700;}
+
+  .progwrap{margin:4px auto 30px;max-width:500px;opacity:0;animation:rise .8s .7s forwards;}
+  .progbar{height:8px;border-radius:99px;background:rgba(255,255,255,.35);overflow:hidden;box-shadow:inset 0 1px 3px rgba(1,90,110,.2);}
+  .progfill{height:100%;width:0;border-radius:99px;background:var(--amarillo);box-shadow:0 0 12px rgba(253,197,38,.6);transition:width .6s ease;}
+  .proglbl{display:flex;justify-content:space-between;margin-top:9px;font-family:'Space Mono',monospace;
+    font-size:11px;letter-spacing:.12em;color:#fff;text-transform:uppercase;}
+  .proglbl b{color:var(--amarillo);}
+
+  .pass-title{text-align:center;font-family:'Space Mono',monospace;font-size:clamp(10px,2.6vw,12px);
+    letter-spacing:.3em;color:#fff;text-transform:uppercase;margin-bottom:16px;}
+  .pass-title b{color:var(--amarillo);}
+  .sellos{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:8px;}
+  @media(max-width:480px){.sellos{grid-template-columns:repeat(2,1fr);gap:9px;}}
+  .sello{position:relative;aspect-ratio:1;border-radius:18px;background:rgba(255,255,255,.16);
+    border:1.5px solid rgba(255,255,255,.3);display:flex;flex-direction:column;align-items:center;
+    justify-content:center;gap:6px;padding:8px 6px;text-align:center;overflow:hidden;
+    transition:transform .4s,background .4s,box-shadow .4s,border-color .4s;}
+  .sello .ico{width:30%;max-width:34px;color:rgba(255,255,255,.55);transition:color .4s;}
+  .sello .ico svg{width:100%;height:auto;stroke-linecap:round;stroke-linejoin:round;}
+  .sello .sn{font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,.7);letter-spacing:.08em;}
+  .sello .tm{font-size:clamp(9px,2.4vw,11px);line-height:1.15;color:var(--gris);font-weight:600;display:none;}
+  .sello .lock{position:absolute;font-family:'Space Mono',monospace;font-size:26px;color:rgba(255,255,255,.45);font-weight:700;}
+  .sello.on{background:#fff;border-color:#fff;box-shadow:0 10px 26px rgba(1,90,110,.3);animation:pop .5s ease;}
+  .sello.on .ico{color:var(--cian);} .sello.on .sn{color:var(--cian-dark);font-weight:700;}
+  .sello.on .tm{display:block;} .sello.on .lock{display:none;}
+  .sello.nuevo{box-shadow:0 0 0 3px var(--amarillo),0 12px 30px rgba(1,90,110,.35);}
+  .sello.nuevo .ico{animation:beat 1.5s ease-in-out infinite;}
+  .sello .badge{position:absolute;top:7px;right:7px;font-family:'Space Mono',monospace;font-size:8px;
+    letter-spacing:.1em;color:var(--gris);background:var(--amarillo);padding:3px 7px;border-radius:99px;font-weight:700;display:none;}
+  .sello.nuevo .badge{display:block;}
+  @keyframes pop{0%{transform:scale(.85);opacity:.4;}60%{transform:scale(1.05);}100%{transform:scale(1);opacity:1;}}
+  @keyframes beat{0%,100%{transform:scale(1);}50%{transform:scale(1.14);}}
+
+  /* Selector de grupo */
+  .grupo-card{background:#fff;border-radius:22px;padding:22px 20px;margin-top:26px;
+    box-shadow:0 16px 40px rgba(1,90,110,.3);color:var(--gris);}
+  .grupo-card .gc-title{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.26em;
+    text-transform:uppercase;color:var(--cian-dark);font-weight:700;margin-bottom:12px;text-align:center;}
+  .grupo-sel{width:100%;padding:13px 16px;border-radius:12px;border:2px solid #e3e8ec;background:#fafbfc;
+    font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:var(--gris);cursor:pointer;
+    -webkit-appearance:none;appearance:none;text-align:center;text-align-last:center;transition:border-color .2s;}
+  .grupo-sel:focus{outline:none;border-color:var(--cian);}
+  .gc-result{margin-top:16px;}
+  .gc-next{background:linear-gradient(135deg,var(--cian),var(--cian-dark));border-radius:16px;
+    padding:16px 18px;color:#fff;text-align:center;margin-bottom:14px;}
+  .gc-next .l{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.9;}
+  .gc-next .d{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(18px,5vw,24px);margin:6px 0 2px;}
+  .gc-next .t{font-family:'Source Serif 4',serif;font-size:14px;opacity:.95;}
+  .gc-next .yellow{color:var(--amarillo);}
+  .gc-list{display:flex;flex-direction:column;gap:6px;}
+  .gc-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;background:#f6f8fa;
+    font-size:13px;color:var(--gris-soft);}
+  .gc-row .ck{width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;
+    justify-content:center;font-size:11px;font-weight:700;border:2px solid #cfd6dc;color:#cfd6dc;font-family:'Space Mono',monospace;}
+  .gc-row .tema{flex:1;font-weight:600;color:var(--gris);}
+  .gc-row .fch{font-family:'Space Mono',monospace;font-size:11px;color:var(--gris-soft);}
+  .gc-row.done{opacity:.55;} .gc-row.done .ck{background:var(--cian);border-color:var(--cian);color:#fff;}
+  .gc-row.next{background:#fff8e1;box-shadow:0 0 0 2px var(--amarillo);}
+  .gc-row.next .ck{border-color:var(--amarillo);color:var(--amarillo);}
+  .gc-empty{text-align:center;color:var(--gris-soft);font-size:13px;padding:8px;}
+
+  .foot{text-align:center;margin-top:30px;}
+  .foot .marca{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;letter-spacing:.02em;color:#fff;}
+  .foot .marca .p{color:var(--amarillo);}
+  .foot .lema{font-family:'Source Serif 4',serif;font-style:italic;font-size:13px;color:rgba(255,255,255,.85);margin-top:2px;}
+
+  /* Modo expectación: oculta todo menos el reloj hasta la revelación */
+  .stage.pre .kicker,
+  .stage.pre .statuspill,
+  .stage.pre .progwrap,
+  .stage.pre .pass-title,
+  .stage.pre #sellos,
+  .stage.pre .grupo-card{display:none !important;}
+  .stage.pre .clock{margin-bottom:10px;}
+  /* Animación de revelación al llegar a 0 */
+  .reveal-anim{animation:revealIn .9s cubic-bezier(.16,1,.3,1) both;}
+  @keyframes revealIn{from{opacity:0;transform:translateY(26px) scale(.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+  @keyframes rise{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+  <div class="bg"></div>
+
+  <div class="stage pre" id="stage">
+    <div class="kicker">Certificación <b>·</b> Q3 2026</div>
+    <div class="wordmark">
+      <span class="elite">ÉLITE</span>
+      <span class="cv"><span class="c">CV</span><span class="p">+</span></span>
+    </div>
+    <p class="hook">No todos ven igual.<br>Los expertos <em>ven más.</em></p>
+    <span class="statuspill" id="statusPill">8 sesiones · 8 sellos · 1 sola élite</span>
+
+    <div class="clocklabel" id="clockLabel"></div>
+    <div class="clock" id="clock">
+      <div class="unit"><div class="num" id="d">00</div><div class="lbl">Días</div></div>
+      <div class="unit"><div class="num" id="h">00</div><div class="lbl">Horas</div></div>
+      <div class="unit"><div class="num" id="m">00</div><div class="lbl">Min</div></div>
+      <div class="unit"><div class="num" id="s">00</div><div class="lbl">Seg</div></div>
+    </div>
+
+    <div class="progwrap">
+      <div class="progbar"><div class="progfill" id="progfill"></div></div>
+      <div class="proglbl"><span>Avance del programa</span><span><b id="pct">0/8</b></span></div>
+    </div>
+
+    <div class="pass-title">Pasaporte del Experto · <b id="count">0</b>/8 sellos</div>
+    <div class="sellos" id="sellos"></div>
+
+    <div class="grupo-card">
+      <div class="gc-title">¿De qué grupo eres?</div>
+      <select class="grupo-sel" id="grupoSel">
+        <option value="">Elige tu grupo para ver tus fechas</option>
+        <option value="1">Grupo 1 · Galerías</option>
+        <option value="2">Grupo 2 · Galerías</option>
+        <option value="3">Grupo 3 · Oficinas</option>
+        <option value="4">Grupo 4 · Plaza Mundo Usulután</option>
+        <option value="5">Grupo 5 · Ramblas Santa Ana</option>
+      </select>
+      <div class="gc-result" id="grupoResult"></div>
+    </div>
+
+    <div class="foot">
+      <div class="marca">Academia CV<span class="p">+</span></div>
+      <div class="lema">Visión sin obstáculos</div>
+    </div>
+  </div>
+
+<script>
+  /* ════════════════════════════════════════════════════════════
+     ⚙️  CONFIGURACIÓN
+     LAUNCH_DATE = revelación + sesión 1 (zona El Salvador, UTC-6).
+     Cada sello se desblonea en la fecha de inicio de su tema.
+     ════════════════════════════════════════════════════════════ */
+  const LAUNCH_DATE = new Date('2026-07-01T07:30:00-06:00');
+
+  // Sellos: se desbloquean en la semana de su tema (fecha = inicio del tema)
+  const SELLOS = [
+    {tema:'Tipos de lentes oftálmicos', fecha:'2026-07-01', ico:'<circle cx="8" cy="12" r="5"/><circle cx="16" cy="12" r="5"/>'},
+    {tema:'Materiales de lentes',        fecha:'2026-07-13', ico:'<path d="M12 3l8 5v8l-8 5-8-5V8z"/>'},
+    {tema:'Tratamientos de lentes',      fecha:'2026-07-27', ico:'<path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/><path d="M9 12l2 2 4-4"/>'},
+    {tema:'Lentes visión sencilla',      fecha:'2026-08-10', ico:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/>'},
+    {tema:'Lentes progresivos',          fecha:'2026-08-24', ico:'<path d="M5 19V14"/><path d="M10 19V10"/><path d="M15 19V7"/><path d="M20 19V4"/>'},
+    {tema:'Portafolios Akkurat y Luminex',fecha:'2026-09-07', ico:'<path d="M12 3l2.4 5.2 5.6.5-4.3 3.7 1.3 5.6L12 20.6 7 18l1.3-5.6L4 8.7l5.6-.5z"/>'},
+    {tema:'Modelo de ventas',            fecha:'2026-09-16', ico:'<path d="M4 20L19 5"/><path d="M13 5h6v6"/>'},
+    {tema:'Aros oftálmicos',             fecha:'2026-09-24', ico:'<circle cx="6.5" cy="14" r="3.5"/><circle cx="17.5" cy="14" r="3.5"/><path d="M10 14c1-1 3-1 4 0"/><path d="M3 11l2-4h2.5"/><path d="M21 11l-2-4h-2.5"/>'}
+  ];
+
+  // Calendario completo por grupo (de tu calendarización Q3)
+  const EVENTOS = [
+    {f:'2026-07-01',g:1,t:'Tipos de lentes'},{f:'2026-07-02',g:2,t:'Tipos de lentes'},{f:'2026-07-03',g:3,t:'Tipos de lentes'},{f:'2026-07-06',g:4,t:'Tipos de lentes'},{f:'2026-07-07',g:5,t:'Tipos de lentes'},
+    {f:'2026-07-13',g:1,t:'Materiales de lentes'},{f:'2026-07-14',g:2,t:'Materiales de lentes'},{f:'2026-07-15',g:3,t:'Materiales de lentes'},{f:'2026-07-16',g:4,t:'Materiales de lentes'},{f:'2026-07-17',g:5,t:'Materiales de lentes'},
+    {f:'2026-07-27',g:1,t:'Tratamientos de lentes'},{f:'2026-07-28',g:2,t:'Tratamientos de lentes'},{f:'2026-07-29',g:3,t:'Tratamientos de lentes'},{f:'2026-07-30',g:4,t:'Tratamientos de lentes'},{f:'2026-07-31',g:5,t:'Tratamientos de lentes'},
+    {f:'2026-08-10',g:1,t:'Lentes visión sencilla'},{f:'2026-08-11',g:2,t:'Lentes visión sencilla'},{f:'2026-08-12',g:3,t:'Lentes visión sencilla'},{f:'2026-08-13',g:4,t:'Lentes visión sencilla'},{f:'2026-08-14',g:5,t:'Lentes visión sencilla'},
+    {f:'2026-08-24',g:1,t:'Lentes progresivos'},{f:'2026-08-25',g:2,t:'Lentes progresivos'},{f:'2026-08-26',g:3,t:'Lentes progresivos'},{f:'2026-08-27',g:4,t:'Lentes progresivos'},{f:'2026-08-28',g:5,t:'Lentes progresivos'},
+    {f:'2026-09-07',g:1,t:'Portafolios Akkurat y Luminex'},{f:'2026-09-08',g:2,t:'Portafolios Akkurat y Luminex'},{f:'2026-09-09',g:3,t:'Portafolios Akkurat y Luminex'},{f:'2026-09-10',g:4,t:'Portafolios Akkurat y Luminex'},{f:'2026-09-11',g:5,t:'Portafolios Akkurat y Luminex'},
+    {f:'2026-09-16',g:1,t:'Modelo de ventas'},{f:'2026-09-17',g:2,t:'Modelo de ventas'},{f:'2026-09-18',g:3,t:'Modelo de ventas'},{f:'2026-09-21',g:4,t:'Modelo de ventas'},{f:'2026-09-22',g:5,t:'Modelo de ventas'},
+    {f:'2026-09-24',g:1,t:'Aros oftálmicos'},{f:'2026-09-25',g:2,t:'Aros oftálmicos'},{f:'2026-09-28',g:3,t:'Aros oftálmicos'},{f:'2026-09-29',g:4,t:'Aros oftálmicos'},{f:'2026-09-30',g:5,t:'Aros oftálmicos'}
+  ];
+
+  const DIAS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const MESAB=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const DAY=86400000;
+  const ts=f=>new Date(f+'T07:30:00-06:00').getTime();           // momento absoluto
+  const parts=f=>{const[y,m,d]=f.split('-').map(Number);const wd=new Date(Date.UTC(y,m-1,d)).getUTCDay();return{y,m,d,wd};};
+  const fmtLong=f=>{const p=parts(f);return `${DIAS[p.wd]} ${p.d} de ${MESES[p.m-1]}`;};
+  const fmtShort=f=>{const p=parts(f);return `${p.d} ${MESAB[p.m-1]}`;};
+  const pad=n=>String(n).padStart(2,'0');
+  const $=id=>document.getElementById(id);
+
+  // Construir sellos
+  const cont=$('sellos');
+  SELLOS.forEach((s,idx)=>{
+    const i=idx+1;const el=document.createElement('div');el.className='sello';el.dataset.i=i;
+    el.innerHTML='<span class="badge">Nuevo</span><span class="lock">?</span>'+
+      '<div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">'+s.ico+'</svg></div>'+
+      '<div class="sn">Sesión '+i+'</div><div class="tm">'+s.tema+'</div>';
+    cont.appendChild(el);
+  });
+  const sellEls=[...cont.children];
+
+  // Burbujas
+  for(let k=0;k<10;k++){const b=document.createElement('div');b.className='blob';
+    const sz=Math.random()*70+30;b.style.width=b.style.height=sz+'px';b.style.left=Math.random()*100+'vw';
+    b.style.opacity=(Math.random()*.08+.04).toFixed(2);b.style.animationDuration=(Math.random()*22+18)+'s';
+    b.style.animationDelay=(-Math.random()*30)+'s';document.body.appendChild(b);}
+
+  function tick(){
+    const now=Date.now();
+
+    // Estado de sellos
+    let revelados=0,lastUnlocked=0,nextSello=null,nextIdx=-1;
+    sellEls.forEach((el,idx)=>{
+      const ut=ts(SELLOS[idx].fecha);
+      if(now>=ut){ if(!el.classList.contains('on'))el.classList.add('on'); revelados++; lastUnlocked=idx+1; }
+      else if(nextSello===null){ nextSello=SELLOS[idx]; nextIdx=idx; }
+    });
+    $('count').textContent=revelados;
+    $('pct').textContent=revelados+'/8';
+    $('progfill').style.width=(revelados/8*100)+'%';
+
+    // Sello "Nuevo" (desbloqueado en los últimos 7 días)
+    sellEls.forEach(el=>el.classList.remove('nuevo'));
+    if(lastUnlocked){ if(now-ts(SELLOS[lastUnlocked-1].fecha) < 7*DAY) sellEls[lastUnlocked-1].classList.add('nuevo'); }
+
+    // Estado general + reloj
+    const lanzado = now>=LAUNCH_DATE.getTime();
+    const stage=$('stage');
+    const pill=$('statusPill');
+    if(!lanzado){
+      stage.classList.add('pre');
+      pill.className='statuspill';
+      pill.textContent='8 sesiones · 8 sellos · 1 sola élite';
+    } else {
+      const firstReveal=stage.classList.contains('pre');
+      stage.classList.remove('pre');
+      pill.className='statuspill live';
+      pill.textContent='✓ La certificación está en marcha';
+      if(firstReveal){
+        ['.kicker','.statuspill','.progwrap','.pass-title','#sellos','.grupo-card'].forEach(sel=>{const n=document.querySelector(sel);if(n)n.classList.add('reveal-anim');});
+      }
+    }
+
+    if(nextSello){
+      const target = ts(nextSello.fecha);
+      const diff = target-now;
+      $('clock').style.display='flex';
+      if(nextIdx===0){ $('clockLabel').innerHTML='Para la revelación · <b>1 de julio</b>'; }
+      else { $('clockLabel').innerHTML='Próximo sello · <b>'+nextSello.tema+'</b>'; }
+      $('d').textContent=pad(Math.floor(diff/DAY));
+      $('h').textContent=pad(Math.floor(diff%DAY/3600000));
+      $('m').textContent=pad(Math.floor(diff%3600000/60000));
+      $('s').textContent=pad(Math.floor(diff%60000/1000));
+    } else {
+      $('clock').style.display='none';
+      $('clockLabel').innerHTML='<b>Programa completo · los 8 sellos conquistados</b>';
+    }
+  }
+
+  // Selector de grupo
+  function renderGrupo(g){
+    const box=$('grupoResult');
+    if(!g){ box.innerHTML=''; return; }
+    const now=Date.now();
+    const sesiones=EVENTOS.filter(e=>e.g===+g).sort((a,b)=>ts(a.f)-ts(b.f));
+    const next=sesiones.find(e=>ts(e.f)>=now);
+    let html='';
+    if(next){
+      html+='<div class="gc-next"><div class="l">Tu próxima sesión</div>'+
+        '<div class="d">'+fmtLong(next.f)+' <span class="yellow">· 7:30 a.m.</span></div>'+
+        '<div class="t">'+next.t+'</div></div>';
+    } else {
+      html+='<div class="gc-next"><div class="l">Felicidades</div>'+
+        '<div class="d">¡Completaste tu ruta! 🎉</div>'+
+        '<div class="t">Eres parte de la Élite CV+</div></div>';
+    }
+    html+='<div class="gc-list">';
+    sesiones.forEach((e,i)=>{
+      const past=ts(e.f)<now, isNext=next&&e.f===next.f;
+      const cls=past?'done':(isNext?'next':'');
+      const mark=past?'✓':(i+1);
+      html+='<div class="gc-row '+cls+'"><span class="ck">'+mark+'</span>'+
+        '<span class="tema">'+e.t+'</span><span class="fch">'+fmtShort(e.f)+'</span></div>';
+    });
+    html+='</div>';
+    box.innerHTML=html;
+  }
+  $('grupoSel').addEventListener('change',e=>renderGrupo(e.target.value));
+
+  tick();
+  setInterval(tick,1000);
+</script>
+</body>
+</html>
